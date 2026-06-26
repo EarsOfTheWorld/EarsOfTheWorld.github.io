@@ -11,7 +11,9 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: #f7f5f0;
     color: #1a1a1a;
-    padding-bottom: 5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 0 2rem;
   }
 
   header {
@@ -29,11 +31,18 @@
     margin-top: 0.2rem;
   }
 
-  .day-section {
-    padding: 1.25rem 1rem 0.5rem;
+  .intro {
+    padding: 0.9rem 1rem 0;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.5;
   }
 
-  .day-heading {
+  .day-section {
+    padding: 1.25rem 1rem 0.25rem;
+  }
+
+  h2.day-heading {
     font-size: 1.2rem;
     font-weight: 800;
     color: #1a3a5c;
@@ -42,79 +51,71 @@
     margin-bottom: 0.75rem;
   }
 
-  .event {
+  article.event {
     background: #fff;
     border-radius: 10px;
     padding: 0.9rem 1rem 0.85rem;
     margin-bottom: 0.75rem;
     box-shadow: 0 1px 4px rgba(0,0,0,0.07);
     border-left: 4px solid transparent;
-    transition: border-color 0.15s;
   }
-  .event.selected {
+  article.event:has(input:checked) {
     border-left-color: #f0a500;
   }
 
-  /* The h2 IS the checkbox — role=checkbox on the heading */
-  .event-title {
+  /* Checkbox + label live inside h3 — exactly like ATGuys */
+  h3.event-title {
     font-size: 1rem;
     font-weight: 700;
-    line-height: 1.35;
-    color: #1a1a1a;
-    cursor: pointer;
+    line-height: 1.4;
     display: flex;
     align-items: flex-start;
-    gap: 0.65rem;
-    padding: 0.1rem 0;
-    /* Make it feel tappable */
-    -webkit-tap-highlight-color: transparent;
-  }
-  .event-title:focus {
-    outline: 3px solid #f0a500;
-    outline-offset: 2px;
-    border-radius: 4px;
+    gap: 0.6rem;
   }
 
-  /* Visual checkbox indicator */
-  .event-title::before {
-    content: '';
-    display: block;
+  h3.event-title input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
     width: 24px;
     height: 24px;
     min-width: 24px;
     border: 2px solid #1a3a5c;
     border-radius: 6px;
     background: #fff;
-    margin-top: 0.05rem;
+    margin-top: 0.1rem;
+    cursor: pointer;
     position: relative;
-    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
   }
-  .event-title[aria-checked="true"]::before {
+  h3.event-title input[type="checkbox"]:checked {
     background: #1a3a5c;
     border-color: #1a3a5c;
-    /* Checkmark via box-shadow trick */
-    box-shadow: inset 0 0 0 2px #1a3a5c;
   }
-  /* Checkmark drawn with a pseudo on the span inside */
-  .event-title[aria-checked="true"] .check-mark {
-    display: block;
-  }
-  .check-mark {
-    display: none;
+  h3.event-title input[type="checkbox"]:checked::after {
+    content: '';
     position: absolute;
-    left: 1.9rem;
-    margin-top: -1.55rem;
+    left: 5px;
+    top: 2px;
     width: 10px;
-    height: 14px;
+    height: 13px;
     border: 3px solid #fff;
     border-top: none;
     border-left: none;
     transform: rotate(45deg);
-    pointer-events: none;
+  }
+  h3.event-title input[type="checkbox"]:focus-visible {
+    outline: 3px solid #f0a500;
+    outline-offset: 2px;
+  }
+
+  h3.event-title label {
+    cursor: pointer;
+    flex: 1;
   }
 
   .event-meta {
     margin-top: 0.5rem;
+    padding-left: 0;
   }
   .event-time {
     font-size: 0.78rem;
@@ -142,48 +143,34 @@
     margin-top: 0.4rem;
   }
 
-  /* Sticky bar for sighted users */
-  #sticky-bar {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: #f7f5f0;
-    border-top: 1px solid #ddd;
-    padding: 0.75rem 1rem;
-    z-index: 50;
+  /* Submit button — plain, at the bottom of the DOM */
+  .export-section {
+    padding: 1.5rem 1rem 1rem;
   }
-  #export-btn-sticky {
+  #export-btn {
+    display: block;
     width: 100%;
     background: #1a3a5c;
     color: #fff;
     border: none;
     border-radius: 28px;
-    padding: 0.85rem 1.5rem;
+    padding: 0.9rem 1.5rem;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
   }
-  #export-btn-sticky:disabled { background: #aaa; cursor: default; }
-
-  /* DOM-order button for VoiceOver — visible and at end of page */
-  #export-btn-end {
-    display: block;
-    width: calc(100% - 2rem);
-    margin: 1rem auto 0.5rem;
-    background: #1a3a5c;
-    color: #fff;
-    border: none;
-    border-radius: 28px;
-    padding: 0.85rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
+  #export-btn:disabled {
+    background: #aaa;
+    cursor: default;
   }
-  #export-btn-end:disabled { background: #aaa; cursor: default; }
-  #export-btn-end:focus-visible { outline: 3px solid #f0a500; outline-offset: 2px; }
+  #export-btn:focus-visible {
+    outline: 3px solid #f0a500;
+    outline-offset: 2px;
+  }
 
   #toast {
     position: fixed;
-    bottom: 5rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: #1a3a5c;
@@ -199,658 +186,810 @@
     z-index: 100;
   }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
 
 <header>
   <h1>NFB 2026 – Eric's Agenda</h1>
-  <p>Austin, Texas · July 3–8, 2026 · Double-tap a session to select it</p>
+  <p>Austin, Texas · July 3–8, 2026</p>
 </header>
 
-<main id="main"></main>
+<p class="intro">Check the sessions you want to attend, then tap "Add to Calendar" at the bottom to download one .ics file for all your selections.</p>
 
-<!-- DOM-order export button: VoiceOver reads this last in natural order -->
-<button id="export-btn-end" disabled>No events selected</button>
+<form id="agenda-form" onsubmit="return false;">
 
-<!-- Visually sticky copy for sighted users, hidden from VoiceOver -->
-<div id="sticky-bar" aria-hidden="true">
-  <button id="export-btn-sticky" disabled tabindex="-1">No events selected</button>
+<section class="day-section">
+<h2 class="day-heading">Friday, July 3</h2>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e01" name="events" value="e01">
+    <label for="e01">The AI Landscape: ChatGPT, Claude, Gemini, and Accessibility</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">8:30–11:30 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salons G and H (level 3)</p>
+    <p class="event-desc">A practical overview of major AI changes affecting blind users, comparing ChatGPT, Claude, and Gemini for strengths, limits, and accessible real-world uses, plus trends and new features reshaping productivity, information access, and everyday tech.</p>
+    <p class="event-pres">Charles Hiser and Ron Miller, Accessibility Excellence Advocates, and Jonathan Mosen, Executive Director for Accessibility Excellence, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e02" name="events" value="e02">
+    <label for="e02">NCD 2027 Policy Projects and Town Hall</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">9:30–11:30 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon B (level 3)</p>
+    <p class="event-desc">The National Council on Disability, the federal agency and advisor to the president, Congress, and federal agencies, will examine issues impacting people with disabilities. Learn about the latest topics NCD selected for 2027 and share your experiences in a town hall.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e03" name="events" value="e03">
+    <label for="e03">Updates from Monarch and More with APH</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">10:00–11:00 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 201 and 202</p>
+    <p class="event-desc">Join us for demonstrations of upcoming products, Monarch version 1.5, and more. See revolutionary tech at work and be the first to hear about the newest product developments and improvements. Bring your questions, enthusiasm, and curiosity!</p>
+    <p class="event-pres">Greg Stilson, VP of Digital Transformation; Jennifer Wenzel and Michael Dennis, Technology Product Specialists; and Jason Martin, Technical Innovations Product Manager, American Printing House for the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e04" name="events" value="e04">
+    <label for="e04">Employment Committee Meeting</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">10:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 302</p>
+    <p class="event-desc">Join the annual meeting of the NFB Employment Committee. Learn about what we've been working on for the last year and what's in store for the year ahead.</p>
+    <p class="event-pres">Lia Stone, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e05" name="events" value="e05">
+    <label for="e05">EZRE: Receipts Built for Us, By Us</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">11:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 401</p>
+    <p class="event-desc">Join EZRE founder Alberto Destarac for a live demo of the first app that delivers itemized digital receipts to your phone the moment you pay—no scanning, no asking for help at checkout. Hear it work with VoiceOver and TalkBack. Q&amp;A, hands-on testing, and feedback welcome.</p>
+    <p class="event-pres">Alberto Destarac, Founder and CTO, and Andrew Gundersen, EZRE</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e06" name="events" value="e06">
+    <label for="e06">What's New at HumanWare</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–4:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 203 and 204</p>
+    <p class="event-desc">Join the HumanWare team for an upbeat session! Discover the BrailleNote Evolve—a Windows 11 computer in a compact Braille device powered by KeySoft and NVDA. Explore the latest VictorReader Stream updates, various Braille displays, and the new Meta smart glasses.</p>
+    <p class="event-pres">Andrew Flattres, Rachel Ramos, and Joel Zimba, HumanWare</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e07" name="events" value="e07">
+    <label for="e07">Committee for Advancement and Promotion of Braille</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–4:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 504</p>
+    <p class="event-desc">The committee will discuss Braille-related resources and activities across our organization, developments in the teaching and delivery of Braille, research priorities, Braille-related policy, and strategies for bringing improvements where needed. All are welcome!</p>
+    <p class="event-pres">Jennifer Dunnam, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e08" name="events" value="e08">
+    <label for="e08">Drop-In Art Room</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–6:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon A (level 3)</p>
+    <p class="event-desc">Free tactile art activities for everyone! Join the Tactile Art Collective and make art with us. Draw, sculpt, color pictures, fold origami, code SVG, build with LEGOs, and solve puzzles. Don't know how? We are here to teach. Learn about flip-pics, pop-ups, and maps. Come to have fun!</p>
+    <p class="event-pres">Ann Cunningham, Coordinator</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e09" name="events" value="e09">
+    <label for="e09">NCD 2027 Policy Projects and Town Hall (second session)</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:30–3:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon B (level 3)</p>
+    <p class="event-desc">The National Council on Disability, federal agency and advisor to the president, Congress, and federal agencies, will examine issues impacting people with disabilities. Learn about the latest topics NCD selected for 2027 and share your experiences in a town hall.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e10" name="events" value="e10">
+    <label for="e10">Advocating for Access – On-Demand Transit</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">2:00–3:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 401</p>
+    <p class="event-desc">Transit agencies are expanding rideshare partnerships, microtransit, and other on-demand services, and accessibility can vary widely. This workshop will explain how several key service decisions can impact service accessibility and effectiveness for people who are blind.</p>
+    <p class="event-pres">Ron Brooks, Senior Director, Policy and Partnership, UZURV</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e11" name="events" value="e11">
+    <label for="e11">Building Technology Confidence</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">2:00–3:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salons G and H (level 3)</p>
+    <p class="event-desc">Learn to pick tech that fits your needs and learning style. Use AI for structured exploration, troubleshooting, and step-by-step learning. Build lasting confidence through experimenting, making mistakes, and solving problems instead of avoiding failure.</p>
+    <p class="event-pres">Charles Hiser and Ron Miller, Accessibility Excellence Advocates, and Jonathan Mosen, Executive Director for Accessibility Excellence, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e12" name="events" value="e12">
+    <label for="e12">Inside the Next Generation of Be My Eyes</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">4:00–5:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 201 and 202</p>
+    <p class="event-desc">Join Be My Eyes for a whirlwind tour of the latest features, redesigns, and tools coming to the platform. Experience live demos of agentic call mode, refreshed mobile and desktop interfaces, and more.</p>
+    <p class="event-pres">Danielle Montour Lane, Community Manager, Be My Eyes</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e13" name="events" value="e13">
+    <label for="e13">Technology Exhibitors Showcase</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">6:30–9:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 203 and 204</p>
+    <p class="event-desc">Join us to learn about low- to high-tech products, from hardware to software, and more. Hear the latest from our vendors at this session.</p>
+    <p class="event-pres">Mark Jones, Coordinator</p>
+  </div>
+</article>
+</section>
+
+<section class="day-section">
+<h2 class="day-heading">Saturday, July 4</h2>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e14" name="events" value="e14">
+    <label for="e14">The Blind Professional Playbook</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">9:00–11:00 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon H (level 3)</p>
+    <p class="event-desc">You're hired! Now what? Early careers are full of firsts—first performance review, first time searching for an apartment, first time advocating for yourself at work. We welcome blind early professionals (0–5 years) to connect, learn, and build the playbook no one gave us. Sponsored by the NFB Employment Committee.</p>
+    <p class="event-pres">Lia Stone, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e15" name="events" value="e15">
+    <label for="e15">What's New in Google Accessibility</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">10:00–11:00 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon F (level 3)</p>
+    <p class="event-desc">This session provides a summary of recent updates to accessibility features across Google products.</p>
+    <p class="event-pres">Mariah Moon, Praveena Parsiboina, and Nimer Jaber, Google</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e16" name="events" value="e16">
+    <label for="e16">EZRE: Receipts Built for Us, By Us</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">10:00–11:00 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 401</p>
+    <p class="event-desc">Join EZRE founder Alberto Destarac for a live demo of the first app that delivers itemized digital receipts to your phone the moment you pay—no scanning, no asking for help at checkout. Hear it work with VoiceOver and TalkBack. Q&amp;A, hands-on testing, and feedback welcome.</p>
+    <p class="event-pres">Alberto Destarac, Founder and CTO, and Andrew Gundersen, EZRE</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e17" name="events" value="e17">
+    <label for="e17">Microsoft 365 Copilot: Reimagine Productivity</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">10:00–11:00 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon B (level 3)</p>
+    <p class="event-desc">Hear how accessibility and AI work across Microsoft 365 Copilot, Narrator, agentic authoring, and image creation to drive productivity for everyone. Presented by blind support engineers at Microsoft.</p>
+    <p class="event-pres">Matt Philipenko, Commercial Support, and Crystal Jones, Disability Answer Desk, Microsoft</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e18" name="events" value="e18">
+    <label for="e18">Investing Fundamentals: Understanding Basics</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">11:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 301</p>
+    <p class="event-desc">Learn the basics of investing: risk, diversification, time horizon, and asset types to build confidence, make informed decisions, and align your investments with your financial goals.</p>
+    <p class="event-pres">Timothy Moore, Senior Financial Advisor, AVP, Wells Fargo</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e19" name="events" value="e19">
+    <label for="e19">JAWS, AI, and the Future of Screen Reading</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">11:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 203 and 204</p>
+    <p class="event-desc">Discover how AI is transforming screen reading and enhancing productivity and independence. Get a look at what's coming next in JAWS and what using a computer looks like in the future.</p>
+    <p class="event-pres">Ryan Jones, SVP, Global Accessibility Strategy and Advocacy, Vispero</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e20" name="events" value="e20">
+    <label for="e20">Microsoft Copilot &amp; Seeing AI</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">11:30 a.m.–12:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon B (level 3)</p>
+    <p class="event-desc">Learn the latest from AI thought leaders and blind innovators at Microsoft.</p>
+    <p class="event-pres">Jessie Lorenz, Copilot, and Saqib Shaikh, Seeing AI, Microsoft</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e21" name="events" value="e21">
+    <label for="e21">Resolutions Committee</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salons 5 and 6 (level 4)</p>
+    <p class="event-desc">Meeting of the NFB Resolutions Committee.</p>
+    <p class="event-pres">Donald Porterfield, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e22" name="events" value="e22">
+    <label for="e22">Drop-In Art Room</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–6:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon A (level 3)</p>
+    <p class="event-desc">Free tactile art activities for everyone! Join the Tactile Art Collective and make art with us. Draw, sculpt, color pictures, fold origami, code SVG, build with LEGOs, and solve puzzles. Don't know how? We are here to teach. Come to have fun!</p>
+    <p class="event-pres">Ann Cunningham, Coordinator</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e23" name="events" value="e23">
+    <label for="e23">Blind Parents Connect</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">2:00–5:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 302</p>
+    <p class="event-desc">It's essential for parents to connect with other parents. Add blindness to the mix, and getting connected with other blind parents is life changing. Come connect with other blind parents and grow your parent community. Let's learn from each other!</p>
+    <p class="event-pres">Lisamaria Martinez, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e24" name="events" value="e24">
+    <label for="e24">Seeking Success Seminar</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">3:00–6:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon C (level 3)</p>
+    <p class="event-desc">Are you a job seeker trying to get your foot in the door? A mid-career professional looking to pivot? Or do you have entrepreneurial aspirations? Join us to hear from blind people across industries on how they turned their dreams into reality and how you can too!</p>
+    <p class="event-pres">Lia Stone, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e25" name="events" value="e25">
+    <label for="e25">Aira! Access Is a Human Right</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">5:00–6:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 202</p>
+    <p class="event-desc">Join the Aira team to explore our latest innovations. Discover hands-free visual interpreting with Meta glasses, get involved in training our Project Astra-powered AI, and learn how to access Aira for free. The future of accessibility is here—come be a part of it!</p>
+    <p class="event-pres">Troy Otillio, CEO, and Everette Bacon, Chief of Blindness Initiatives, Aira</p>
+  </div>
+</article>
+</section>
+
+<section class="day-section">
+<h2 class="day-heading">Sunday, July 5</h2>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e26" name="events" value="e26">
+    <label for="e26">Colorado Caucus</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">7:30–8:30 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 401</p>
+    <p class="event-desc">Colorado affiliate caucus meeting at the NFB National Convention.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e27" name="events" value="e27">
+    <label for="e27">NFB Board Meeting</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">9:00–11:30 a.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Annual meeting of the National Federation of the Blind Board of Directors. Streamed live on Zoom and NFB-NEWSLINE.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e28" name="events" value="e28">
+    <label for="e28">National Association of Blind Merchants</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">12:45–4:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 203 and 204</p>
+    <p class="event-desc">Curiosity drives innovation, creativity, and change. We will discuss the changing landscape of business, entrepreneurs, and Randolph-Sheppard.</p>
+    <p class="event-pres">Nicky Gacos, President</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e29" name="events" value="e29">
+    <label for="e29">National Organization of Blind Educators</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–4:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 301</p>
+    <p class="event-desc">Educators who are blind teach sighted and blind students of all ages, from infants to adults working toward post-graduate degrees. If you are blind and an educator, or are considering a career in education, come join us to share strategies, tips, and tools of the trade. Dues ($10) required for entry. Cash only at the door.</p>
+    <p class="event-pres">Lara Sowell, President</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e30" name="events" value="e30">
+    <label for="e30">Performing Arts and Dance/Movement Workshop</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–5:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon B (level 3)</p>
+    <p class="event-desc">Join us for our annual business meeting followed by Sensory Beyond Sight, a dance/movement workshop crafted and hosted by DJ Robinson. Renew your membership by July 1 to ensure you can participate in all business at our meeting by visiting www.nfb-pad.org.</p>
+    <p class="event-pres">Katelyn MacIntyre, President</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e31" name="events" value="e31">
+    <label for="e31">Braille Book Fair</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">4:30–6:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon E (level 3)</p>
+    <p class="event-desc">Children and their families are invited to browse Braille books looking for a new home. You'll find a broad array of books from a variety of authors for readers young and old alike.</p>
+    <p class="event-pres">National Organization of Parents of Blind Children (NOPBC)</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e32" name="events" value="e32">
+    <label for="e32">NFB in the Kitchen Group</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">5:00–6:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon F (level 3)</p>
+    <p class="event-desc">Sometimes you need a little spark of inspiration to change your cooking routine. As a community of cooking enthusiasts strengthening their confidence, let's talk food, tools, and cooking trends. Bring your ideas and enthusiasm. Come and taste a few bites from "The Café"!</p>
+    <p class="event-pres">Regina Mitchell, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e33" name="events" value="e33">
+    <label for="e33">EchoVision Demo and Tutorial</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">5:00–6:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 304</p>
+    <p class="event-desc">Co-designed from the ground up with the blind and low-vision community, EchoVision integrates world-class AI into a lightweight, stylish wearable designed for one thing: empowerment.</p>
+    <p class="event-pres">Xiaoran Wang, CEO, AGIGA, Inc.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e34" name="events" value="e34">
+    <label for="e34">National Organization of Blind Black Leaders</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">5:30–9:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Rooms 203 and 204</p>
+    <p class="event-desc">Come join our division annual business meeting and hear inspirational presentations by Black members from the National Federation of the Blind.</p>
+    <p class="event-pres">Shawn Callaway, President</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e35" name="events" value="e35">
+    <label for="e35">Free Professional Headshots for LinkedIn</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">6:00–7:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 401</p>
+    <p class="event-desc">If you're looking for work, a great first impression in the hiring process starts on LinkedIn. Come get a perfect headshot of your beautiful smiling face by a professional photographer for your LinkedIn profile. Sponsored by AccessAbility Officer.</p>
+  </div>
+</article>
+</section>
+
+<section class="day-section">
+<h2 class="day-heading">Monday, July 6</h2>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e36" name="events" value="e36">
+    <label for="e36">Opening General Session</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">9:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Official opening of the 86th NFB National Convention. Call to order, presidential report, roll call of states, reports, and resolutions. Streamed live on Zoom and NFB-NEWSLINE.</p>
+    <p class="event-pres">Mark A. Riccobono, President, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e37" name="events" value="e37">
+    <label for="e37">Rebooting My Career After Losing Vision at Thirty-Nine</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">12:00–1:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 303</p>
+    <p class="event-desc">I spent thirteen years building video games at EA before losing my vision. I broke sighted habits, adapted, and earned a job at Amazon. This session covers how I retrained for high-level jobs and raise the bar on accessibility services.</p>
+    <p class="event-pres">Aaron Romero, Senior Software Engineer, Amazon Trust Privacy and Accessibility</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e38" name="events" value="e38">
+    <label for="e38">Advocacy, Empowerment, and Accessible Voting</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">12:00–2:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 202</p>
+    <p class="event-desc">Your chance has arrived, get voting with Democracy Live. Experience the latest accessible voting technologies, learn how to advocate for accessible voting in your community, and connect to share your perspective. Your voice makes a difference.</p>
+    <p class="event-pres">Jake Koch, Education and Outreach Consultant</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e39" name="events" value="e39">
+    <label for="e39">Multiline Braille for Active Lives</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">12:00–2:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 205</p>
+    <p class="event-desc">Discover how the Dot Pad X brings multiline Braille to your active life. Learn how to seamlessly connect to iOS, Windows, and notetakers for unparalleled access to books, apps, documents, and more.</p>
+    <p class="event-pres">Timothy Hornik, Sales Development Manager, and Dave Williams, Customer Experience Manager, Dot Inc.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e40" name="events" value="e40">
+    <label for="e40">General Session II</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">2:00–5:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Second general session of the National Convention. Presidential report, guest presentations, and resolutions.</p>
+    <p class="event-pres">Mark A. Riccobono, President, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e41" name="events" value="e41">
+    <label for="e41">Career Fair</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">6:00–9:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon E (level 3)</p>
+    <p class="event-desc">Come meet national and regional employers who are interested in hiring you, including many of our convention sponsors and Texas employers. This is your first step to a great future! Pre-registration is strongly encouraged. Sponsored by the NFB Employment Committee.</p>
+    <p class="event-pres">Lia Stone, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e42" name="events" value="e42">
+    <label for="e42">CCB Table Shift with Joe</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">7:00–9:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Exhibit Hall Griffin Hall Level 2, Table F1</p>
+    <p class="event-desc">Colorado Center for the Blind staffing shift at the exhibit hall.</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e43" name="events" value="e43">
+    <label for="e43">Working for Yourself, but Not by Yourself</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">7:00–10:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 205</p>
+    <p class="event-desc">Experience how professional training, systems-based practices, personal development, and superior Nikken Japanese-wellness technologies are revolutionizing professional network marketing. Imagine the joy of working with successful mentors to earn through serving others.</p>
+    <p class="event-pres">Mary Ellen Gabias and Paul Gabias, Independent Nikken Wellness Business Consultants</p>
+  </div>
+</article>
+</section>
+
+<section class="day-section">
+<h2 class="day-heading">Tuesday, July 7</h2>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e44" name="events" value="e44">
+    <label for="e44">General Session III</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">9:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Third general session: financial report, board elections, employment panel, and resolutions.</p>
+    <p class="event-pres">Mark A. Riccobono, President, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e45" name="events" value="e45">
+    <label for="e45">What If the Screen Reader Never Had to Ask?</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">12:00–1:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon F (level 3)</p>
+    <p class="event-desc">Since 1997, screen readers have all worked the same way: ask the app what's on screen. We tried something different. Come hear how Amazon built a faster screen reader from scratch, now shipping on select Fire TV devices.</p>
+    <p class="event-pres">Marc Mulcahy, Principal Software Development Engineer, Amazon Trust Privacy and Accessibility</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e46" name="events" value="e46">
+    <label for="e46">General Session IV</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">2:00–5:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Fourth general session: NLS update, 2026 advocacy report, and resolutions committee report.</p>
+    <p class="event-pres">Mark A. Riccobono, President, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e47" name="events" value="e47">
+    <label for="e47">Ray-Ban Meta: Going Further for BLV</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">6:00–7:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon C (level 3)</p>
+    <p class="event-desc">Ray-Ban Meta glasses have been breaking down barriers for the blind and low-vision community since coming to market. We listened to users and improved features to make our technology more accessible. Come learn what we've built this year and get a sneak peek into the future.</p>
+    <p class="event-pres">Agustya Mehta, Director, Concept Engineering; Fan Zhang, Principal Engineer, Accessibility Innovation; and Jacklyn Doig-Keys, Reality Labs Policy Manager, Meta</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e48" name="events" value="e48">
+    <label for="e48">Twenty-Fourth Annual Showcase of Talent</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">8:00–11:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Salon E (level 3)</p>
+    <p class="event-desc">Join us for a night of great performances! Whether you take the stage or cheer from the audience, it's always an entertaining evening. Performers $15; early admission $5; day-of admission $10. Cash prizes awarded. Email nfbpad@gmail.com with questions or to sign up.</p>
+    <p class="event-pres">Katelyn MacIntyre, President, National Federation of the Blind Performing Arts Division</p>
+  </div>
+</article>
+</section>
+
+<section class="day-section">
+<h2 class="day-heading">Wednesday, July 8</h2>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e49" name="events" value="e49">
+    <label for="e49">General Session V</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">9:00 a.m.–12:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Final general session: keynote on blind identity, NFB program updates, address by U.S. Representative Greg Casar, Dr. Jacob Bolotin Awards, and final resolutions.</p>
+    <p class="event-pres">Mark A. Riccobono, President, National Federation of the Blind</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e50" name="events" value="e50">
+    <label for="e50">Holding Uber and Lyft Accountable with Money Damages</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">12:30–1:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 401</p>
+    <p class="event-desc">Rideshare denials violate your civil rights. Learn how blind riders are using small claims court to hold companies accountable without hiring an attorney. We'll cover filing a claim, preparing for a hearing, documenting violations, and using free resources to pursue damages.</p>
+    <p class="event-pres">Tim Elder, TRE Legal Practice</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e51" name="events" value="e51">
+    <label for="e51">Technology Accessibility Listening Session</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">1:00–2:00 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> Room 201</p>
+    <p class="event-desc">Meet the NFB's Committee on Accessibility and User Innovation. We want to hear from our members about what really matters to them regarding their use of technology. What is working? What isn't working? What does it mean when an item of technology is "accessible" to the blind?</p>
+    <p class="event-pres">Curtis Chong, Chair</p>
+  </div>
+</article>
+
+<article class="event">
+  <h3 class="event-title">
+    <input type="checkbox" id="e52" name="events" value="e52">
+    <label for="e52">Banquet</label>
+  </h3>
+  <div class="event-meta">
+    <p class="event-time">6:30 p.m.</p>
+    <p class="event-room"><strong>Room:</strong> JW Grand Ballroom (level 4)</p>
+    <p class="event-desc">Annual closing banquet of the NFB National Convention. Presidential address, scholarship awards, and celebration of the blindness community.</p>
+    <p class="event-pres">Mark A. Riccobono, President, National Federation of the Blind</p>
+  </div>
+</article>
+</section>
+
+<div class="export-section">
+  <button type="button" id="export-btn" disabled>No events selected</button>
 </div>
+
+</form>
 
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const EVENTS = [
-  // ── Friday, July 3 ──
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "The AI Landscape: ChatGPT, Claude, Gemini, and Accessibility",
-    start: "083000", end: "113000",
-    room: "Salons G and H (level 3)",
-    desc: "A practical overview of major AI changes affecting blind users, comparing ChatGPT, Claude, and Gemini for strengths, limits, and accessible real-world uses, plus trends and new features reshaping productivity, information access, and everyday tech.",
-    pres: "Charles Hiser and Ron Miller, Accessibility Excellence Advocates, and Jonathan Mosen, Executive Director for Accessibility Excellence, National Federation of the Blind"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "NCD 2027 Policy Projects and Town Hall",
-    start: "093000", end: "113000",
-    room: "Salon B (level 3)",
-    desc: "The National Council on Disability, the federal agency and advisor to the president, Congress, and federal agencies, will examine issues impacting people with disabilities. Learn about the latest topics NCD selected for 2027 and share your experiences in a town hall.",
-    pres: ""
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Updates from Monarch and More with APH",
-    start: "100000", end: "110000",
-    room: "Rooms 201 and 202",
-    desc: "Join us for demonstrations of upcoming products, Monarch version 1.5, and more. See revolutionary tech at work and be the first to hear about the newest product developments and improvements. Bring your questions, enthusiasm, and curiosity!",
-    pres: "Greg Stilson, VP of Digital Transformation; Jennifer Wenzel and Michael Dennis, Technology Product Specialists; and Jason Martin, Technical Innovations Product Manager, American Printing House for the Blind"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Employment Committee Meeting",
-    start: "100000", end: "120000",
-    room: "Room 302",
-    desc: "Join the annual meeting of the NFB Employment Committee. Learn about what we've been working on for the last year and what's in store for the year ahead.",
-    pres: "Lia Stone, Chair"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "EZRE: Receipts Built for Us, By Us",
-    start: "110000", end: "120000",
-    room: "Room 401",
-    desc: "Join EZRE founder Alberto Destarac for a live demo of the first app that delivers itemized digital receipts to your phone the moment you pay—no scanning, no asking for help at checkout. Hear it work with VoiceOver and TalkBack. Q&A, hands-on testing, and feedback welcome.",
-    pres: "Alberto Destarac, Founder and CTO, and Andrew Gundersen, EZRE"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "What's New at HumanWare",
-    start: "130000", end: "160000",
-    room: "Rooms 203 and 204",
-    desc: "Join the HumanWare team for an upbeat session! Discover the BrailleNote Evolve—a Windows 11 computer in a compact Braille device powered by KeySoft and NVDA. Explore the latest VictorReader Stream updates, various Braille displays, and the new Meta smart glasses.",
-    pres: "Andrew Flattres, Rachel Ramos, and Joel Zimba, HumanWare"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Committee for Advancement and Promotion of Braille",
-    start: "130000", end: "160000",
-    room: "Room 504",
-    desc: "The committee will discuss Braille-related resources and activities across our organization, developments in the teaching and delivery of Braille, research priorities, Braille-related policy, and strategies for bringing improvements where needed. All are welcome!",
-    pres: "Jennifer Dunnam, Chair"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Drop-In Art Room",
-    start: "130000", end: "180000",
-    room: "Salon A (level 3)",
-    desc: "Free tactile art activities for everyone! Join the Tactile Art Collective and make art with us. Draw, sculpt, color pictures, fold origami, code SVG, build with LEGOs, and solve puzzles. Don't know how? We are here to teach. Learn about flip-pics, pop-ups, and maps. Come to have fun!",
-    pres: "Ann Cunningham, Coordinator"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "NCD 2027 Policy Projects and Town Hall (second session)",
-    start: "133000", end: "153000",
-    room: "Salon B (level 3)",
-    desc: "The National Council on Disability, federal agency and advisor to the president, Congress, and federal agencies, will examine issues impacting people with disabilities. Learn about the latest topics NCD selected for 2027 and share your experiences in a town hall.",
-    pres: ""
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Advocating for Access – On-Demand Transit",
-    start: "140000", end: "150000",
-    room: "Room 401",
-    desc: "Transit agencies are expanding rideshare partnerships, microtransit, and other on-demand services, and accessibility can vary widely. This workshop will explain how several key service decisions can impact service accessibility and effectiveness for people who are blind.",
-    pres: "Ron Brooks, Senior Director, Policy and Partnership, UZURV"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Building Technology Confidence",
-    start: "140000", end: "153000",
-    room: "Salons G and H (level 3)",
-    desc: "Learn to pick tech that fits your needs and learning style. Use AI for structured exploration, troubleshooting, and step-by-step learning. Build lasting confidence through experimenting, making mistakes, and solving problems instead of avoiding failure.",
-    pres: "Charles Hiser and Ron Miller, Accessibility Excellence Advocates, and Jonathan Mosen, Executive Director for Accessibility Excellence, National Federation of the Blind"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Inside the Next Generation of Be My Eyes",
-    start: "160000", end: "170000",
-    room: "Rooms 201 and 202",
-    desc: "Join Be My Eyes for a whirlwind tour of the latest features, redesigns, and tools coming to the platform. Experience live demos of agentic call mode, refreshed mobile and desktop interfaces, and more.",
-    pres: "Danielle Montour Lane, Community Manager, Be My Eyes"
-  },
-  {
-    day: "Friday, July 3",
-    date: "20260703",
-    title: "Technology Exhibitors Showcase",
-    start: "183000", end: "210000",
-    room: "Rooms 203 and 204",
-    desc: "Join us to learn about low- to high-tech products, from hardware to software, and more. Hear the latest from our vendors at this session.",
-    pres: "Mark Jones, Coordinator"
-  },
+// Event data for ICS generation — keyed by checkbox value
+const EVENT_DATA = {
+  e01: { date:"20260703", start:"083000", end:"113000", title:"The AI Landscape: ChatGPT, Claude, Gemini, and Accessibility", room:"Salons G and H (level 3), JW Marriott Austin, TX", desc:"A practical overview of major AI changes affecting blind users, comparing ChatGPT, Claude, and Gemini for strengths, limits, and accessible real-world uses, plus trends and new features reshaping productivity, information access, and everyday tech.\n\nCharles Hiser and Ron Miller, Accessibility Excellence Advocates, and Jonathan Mosen, Executive Director for Accessibility Excellence, National Federation of the Blind" },
+  e02: { date:"20260703", start:"093000", end:"113000", title:"NCD 2027 Policy Projects and Town Hall", room:"Salon B (level 3), JW Marriott Austin, TX", desc:"The National Council on Disability will examine issues impacting people with disabilities. Learn about the latest topics NCD selected for 2027 and share your experiences in a town hall." },
+  e03: { date:"20260703", start:"100000", end:"110000", title:"Updates from Monarch and More with APH", room:"Rooms 201 and 202, JW Marriott Austin, TX", desc:"Demonstrations of upcoming products, Monarch version 1.5, and more.\n\nGreg Stilson, VP of Digital Transformation; Jennifer Wenzel and Michael Dennis, Technology Product Specialists; and Jason Martin, Technical Innovations Product Manager, American Printing House for the Blind" },
+  e04: { date:"20260703", start:"100000", end:"120000", title:"Employment Committee Meeting", room:"Room 302, JW Marriott Austin, TX", desc:"Annual meeting of the NFB Employment Committee.\n\nLia Stone, Chair" },
+  e05: { date:"20260703", start:"110000", end:"120000", title:"EZRE: Receipts Built for Us, By Us", room:"Room 401, JW Marriott Austin, TX", desc:"Live demo of the first app that delivers itemized digital receipts to your phone the moment you pay.\n\nAlberto Destarac, Founder and CTO, and Andrew Gundersen, EZRE" },
+  e06: { date:"20260703", start:"130000", end:"160000", title:"What's New at HumanWare", room:"Rooms 203 and 204, JW Marriott Austin, TX", desc:"BrailleNote Evolve, VictorReader Stream updates, Braille displays, and Meta smart glasses.\n\nAndrew Flattres, Rachel Ramos, and Joel Zimba, HumanWare" },
+  e07: { date:"20260703", start:"130000", end:"160000", title:"Committee for Advancement and Promotion of Braille", room:"Room 504, JW Marriott Austin, TX", desc:"Discussion of Braille resources, policy, research priorities, and strategies. All are welcome!\n\nJennifer Dunnam, Chair" },
+  e08: { date:"20260703", start:"130000", end:"180000", title:"Drop-In Art Room", room:"Salon A (level 3), JW Marriott Austin, TX", desc:"Free tactile art activities. Draw, sculpt, color, fold origami, code SVG, build with LEGOs, and solve puzzles.\n\nAnn Cunningham, Coordinator" },
+  e09: { date:"20260703", start:"133000", end:"153000", title:"NCD 2027 Policy Projects and Town Hall (second session)", room:"Salon B (level 3), JW Marriott Austin, TX", desc:"The National Council on Disability will examine issues impacting people with disabilities. Share your experiences in a town hall." },
+  e10: { date:"20260703", start:"140000", end:"150000", title:"Advocating for Access – On-Demand Transit", room:"Room 401, JW Marriott Austin, TX", desc:"How key service decisions impact accessibility and effectiveness of on-demand transit for people who are blind.\n\nRon Brooks, Senior Director, Policy and Partnership, UZURV" },
+  e11: { date:"20260703", start:"140000", end:"153000", title:"Building Technology Confidence", room:"Salons G and H (level 3), JW Marriott Austin, TX", desc:"Learn to pick tech that fits your needs and build lasting confidence through experimenting and problem-solving.\n\nCharles Hiser and Ron Miller, Accessibility Excellence Advocates, and Jonathan Mosen, NFB" },
+  e12: { date:"20260703", start:"160000", end:"170000", title:"Inside the Next Generation of Be My Eyes", room:"Rooms 201 and 202, JW Marriott Austin, TX", desc:"Live demos of agentic call mode and refreshed interfaces.\n\nDanielle Montour Lane, Community Manager, Be My Eyes" },
+  e13: { date:"20260703", start:"183000", end:"210000", title:"Technology Exhibitors Showcase", room:"Rooms 203 and 204, JW Marriott Austin, TX", desc:"Low- to high-tech products, hardware to software.\n\nMark Jones, Coordinator" },
+  e14: { date:"20260704", start:"090000", end:"110000", title:"The Blind Professional Playbook", room:"Salon H (level 3), JW Marriott Austin, TX", desc:"For blind early professionals (0-5 years). Connect, learn, and build the playbook no one gave us.\n\nLia Stone, Chair" },
+  e15: { date:"20260704", start:"100000", end:"110000", title:"What's New in Google Accessibility", room:"Salon F (level 3), JW Marriott Austin, TX", desc:"Recent updates to accessibility features across Google products.\n\nMariah Moon, Praveena Parsiboina, and Nimer Jaber, Google" },
+  e16: { date:"20260704", start:"100000", end:"110000", title:"EZRE: Receipts Built for Us, By Us", room:"Room 401, JW Marriott Austin, TX", desc:"Live demo of the first app that delivers itemized digital receipts to your phone the moment you pay.\n\nAlberto Destarac, Founder and CTO, and Andrew Gundersen, EZRE" },
+  e17: { date:"20260704", start:"100000", end:"110000", title:"Microsoft 365 Copilot: Reimagine Productivity", room:"Salon B (level 3), JW Marriott Austin, TX", desc:"Accessibility and AI across Microsoft 365 Copilot, Narrator, and image creation.\n\nMatt Philipenko, Commercial Support, and Crystal Jones, Disability Answer Desk, Microsoft" },
+  e18: { date:"20260704", start:"110000", end:"120000", title:"Investing Fundamentals: Understanding Basics", room:"Room 301, JW Marriott Austin, TX", desc:"Risk, diversification, time horizon, and asset types.\n\nTimothy Moore, Senior Financial Advisor, AVP, Wells Fargo" },
+  e19: { date:"20260704", start:"110000", end:"120000", title:"JAWS, AI, and the Future of Screen Reading", room:"Rooms 203 and 204, JW Marriott Austin, TX", desc:"How AI is transforming screen reading and what's coming next in JAWS.\n\nRyan Jones, SVP, Global Accessibility Strategy and Advocacy, Vispero" },
+  e20: { date:"20260704", start:"113000", end:"123000", title:"Microsoft Copilot & Seeing AI", room:"Salon B (level 3), JW Marriott Austin, TX", desc:"Latest from AI thought leaders and blind innovators at Microsoft.\n\nJessie Lorenz, Copilot, and Saqib Shaikh, Seeing AI, Microsoft" },
+  e21: { date:"20260704", start:"130000", end:"170000", title:"Resolutions Committee", room:"Salons 5 and 6 (level 4), JW Marriott Austin, TX", desc:"Meeting of the NFB Resolutions Committee.\n\nDonald Porterfield, Chair" },
+  e22: { date:"20260704", start:"130000", end:"180000", title:"Drop-In Art Room", room:"Salon A (level 3), JW Marriott Austin, TX", desc:"Free tactile art activities.\n\nAnn Cunningham, Coordinator" },
+  e23: { date:"20260704", start:"140000", end:"170000", title:"Blind Parents Connect", room:"Room 302, JW Marriott Austin, TX", desc:"Connect with other blind parents and grow your parent community.\n\nLisamaria Martinez, Chair" },
+  e24: { date:"20260704", start:"150000", end:"180000", title:"Seeking Success Seminar", room:"Salon C (level 3), JW Marriott Austin, TX", desc:"Hear from blind people across industries on how they turned their dreams into reality.\n\nLia Stone, Chair" },
+  e25: { date:"20260704", start:"170000", end:"183000", title:"Aira! Access Is a Human Right", room:"Room 202, JW Marriott Austin, TX", desc:"Hands-free visual interpreting with Meta glasses and Project Astra-powered AI.\n\nTroy Otillio, CEO, and Everette Bacon, Chief of Blindness Initiatives, Aira" },
+  e26: { date:"20260705", start:"073000", end:"083000", title:"Colorado Caucus", room:"Room 401, JW Marriott Austin, TX", desc:"Colorado affiliate caucus meeting at the NFB National Convention." },
+  e27: { date:"20260705", start:"090000", end:"113000", title:"NFB Board Meeting", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Annual meeting of the NFB Board of Directors. Streamed live on Zoom and NFB-NEWSLINE." },
+  e28: { date:"20260705", start:"124500", end:"160000", title:"National Association of Blind Merchants", room:"Rooms 203 and 204, JW Marriott Austin, TX", desc:"The changing landscape of business, entrepreneurs, and Randolph-Sheppard.\n\nNicky Gacos, President" },
+  e29: { date:"20260705", start:"130000", end:"160000", title:"National Organization of Blind Educators", room:"Room 301, JW Marriott Austin, TX", desc:"Share strategies, tips, and tools of the trade. Dues ($10) required. Cash only at the door.\n\nLara Sowell, President" },
+  e30: { date:"20260705", start:"130000", end:"170000", title:"Performing Arts and Dance/Movement Workshop", room:"Salon B (level 3), JW Marriott Austin, TX", desc:"Annual business meeting followed by Sensory Beyond Sight dance/movement workshop.\n\nKatelyn MacIntyre, President" },
+  e31: { date:"20260705", start:"163000", end:"183000", title:"Braille Book Fair", room:"Salon E (level 3), JW Marriott Austin, TX", desc:"Browse Braille books looking for a new home.\n\nNational Organization of Parents of Blind Children (NOPBC)" },
+  e32: { date:"20260705", start:"170000", end:"180000", title:"NFB in the Kitchen Group", room:"Salon F (level 3), JW Marriott Austin, TX", desc:"Talk food, tools, and cooking trends. Come taste a few bites from The Cafe!\n\nRegina Mitchell, Chair" },
+  e33: { date:"20260705", start:"170000", end:"180000", title:"EchoVision Demo and Tutorial", room:"Room 304, JW Marriott Austin, TX", desc:"World-class AI in a lightweight wearable designed for empowerment.\n\nXiaoran Wang, CEO, AGIGA, Inc." },
+  e34: { date:"20260705", start:"173000", end:"210000", title:"National Organization of Blind Black Leaders", room:"Rooms 203 and 204, JW Marriott Austin, TX", desc:"Annual business meeting with inspirational presentations by Black members of the NFB.\n\nShawn Callaway, President" },
+  e35: { date:"20260705", start:"180000", end:"190000", title:"Free Professional Headshots for LinkedIn", room:"Room 401, JW Marriott Austin, TX", desc:"Professional headshots for your LinkedIn profile. Sponsored by AccessAbility Officer." },
+  e36: { date:"20260706", start:"090000", end:"120000", title:"Opening General Session", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Official opening of the 86th NFB National Convention.\n\nMark A. Riccobono, President, National Federation of the Blind" },
+  e37: { date:"20260706", start:"120000", end:"130000", title:"Rebooting My Career After Losing Vision at Thirty-Nine", room:"Room 303, JW Marriott Austin, TX", desc:"How to retrain for high-level jobs after vision loss.\n\nAaron Romero, Senior Software Engineer, Amazon Trust Privacy and Accessibility" },
+  e38: { date:"20260706", start:"120000", end:"140000", title:"Advocacy, Empowerment, and Accessible Voting", room:"Room 202, JW Marriott Austin, TX", desc:"Latest accessible voting technologies and how to advocate for accessible voting.\n\nJake Koch, Education and Outreach Consultant" },
+  e39: { date:"20260706", start:"120000", end:"140000", title:"Multiline Braille for Active Lives", room:"Room 205, JW Marriott Austin, TX", desc:"How the Dot Pad X brings multiline Braille to your active life.\n\nTimothy Hornik, Sales Development Manager, and Dave Williams, Customer Experience Manager, Dot Inc." },
+  e40: { date:"20260706", start:"140000", end:"170000", title:"General Session II", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Second general session.\n\nMark A. Riccobono, President, National Federation of the Blind" },
+  e41: { date:"20260706", start:"180000", end:"210000", title:"Career Fair", room:"Salon E (level 3), JW Marriott Austin, TX", desc:"Meet national and regional employers interested in hiring you.\n\nLia Stone, Chair" },
+  e42: { date:"20260706", start:"190000", end:"210000", title:"CCB Table Shift with Joe", room:"Exhibit Hall Griffin Hall Level 2, Table F1, JW Marriott Austin, TX", desc:"Colorado Center for the Blind staffing shift at the exhibit hall." },
+  e43: { date:"20260706", start:"190000", end:"220000", title:"Working for Yourself, but Not by Yourself", room:"Room 205, JW Marriott Austin, TX", desc:"Professional training and network marketing with Nikken wellness technologies.\n\nMary Ellen Gabias and Paul Gabias, Independent Nikken Wellness Business Consultants" },
+  e44: { date:"20260707", start:"090000", end:"120000", title:"General Session III", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Third general session: financial report, board elections, employment panel, and resolutions.\n\nMark A. Riccobono, President, National Federation of the Blind" },
+  e45: { date:"20260707", start:"120000", end:"130000", title:"What If the Screen Reader Never Had to Ask?", room:"Salon F (level 3), JW Marriott Austin, TX", desc:"How Amazon built a faster screen reader from scratch, now on select Fire TV devices.\n\nMarc Mulcahy, Principal Software Development Engineer, Amazon Trust Privacy and Accessibility" },
+  e46: { date:"20260707", start:"140000", end:"170000", title:"General Session IV", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Fourth general session: NLS update, 2026 advocacy report, and resolutions committee report.\n\nMark A. Riccobono, President, National Federation of the Blind" },
+  e47: { date:"20260707", start:"180000", end:"190000", title:"Ray-Ban Meta: Going Further for BLV", room:"Salon C (level 3), JW Marriott Austin, TX", desc:"What Meta has built for the blind and low-vision community this year.\n\nAgustya Mehta, Fan Zhang, and Jacklyn Doig-Keys, Meta" },
+  e48: { date:"20260707", start:"200000", end:"230000", title:"Twenty-Fourth Annual Showcase of Talent", room:"Salon E (level 3), JW Marriott Austin, TX", desc:"A night of great performances. Performers $15; early admission $5; day-of $10. Email nfbpad@gmail.com to sign up.\n\nKatelyn MacIntyre, President, NFB Performing Arts Division" },
+  e49: { date:"20260708", start:"090000", end:"120000", title:"General Session V", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Final general session: Dr. Jacob Bolotin Awards and final resolutions.\n\nMark A. Riccobono, President, National Federation of the Blind" },
+  e50: { date:"20260708", start:"123000", end:"133000", title:"Holding Uber and Lyft Accountable with Money Damages", room:"Room 401, JW Marriott Austin, TX", desc:"Using small claims court to hold rideshare companies accountable without an attorney.\n\nTim Elder, TRE Legal Practice" },
+  e51: { date:"20260708", start:"130000", end:"140000", title:"Technology Accessibility Listening Session", room:"Room 201, JW Marriott Austin, TX", desc:"Share what matters to you about technology accessibility with the NFB Committee on Accessibility and User Innovation.\n\nCurtis Chong, Chair" },
+  e52: { date:"20260708", start:"183000", end:"220000", title:"Banquet", room:"JW Grand Ballroom (level 4), JW Marriott Austin, TX", desc:"Annual closing banquet of the NFB National Convention.\n\nMark A. Riccobono, President, National Federation of the Blind" }
+};
 
-  // ── Saturday, July 4 ──
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "The Blind Professional Playbook",
-    start: "090000", end: "110000",
-    room: "Salon H (level 3)",
-    desc: "You're hired! Now what? Early careers are full of firsts—first performance review, first time searching for an apartment, first time advocating for yourself at work. We welcome blind early professionals (0–5 years) to connect, learn, and build the playbook no one gave us. Sponsored by the NFB Employment Committee.",
-    pres: "Lia Stone, Chair"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "What's New in Google Accessibility",
-    start: "100000", end: "110000",
-    room: "Salon F (level 3)",
-    desc: "This session provides a summary of recent updates to accessibility features across Google products.",
-    pres: "Mariah Moon, Praveena Parsiboina, and Nimer Jaber, Google"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "EZRE: Receipts Built for Us, By Us",
-    start: "100000", end: "110000",
-    room: "Room 401",
-    desc: "Join EZRE founder Alberto Destarac for a live demo of the first app that delivers itemized digital receipts to your phone the moment you pay—no scanning, no asking for help at checkout. Hear it work with VoiceOver and TalkBack. Q&A, hands-on testing, and feedback welcome.",
-    pres: "Alberto Destarac, Founder and CTO, and Andrew Gundersen, EZRE"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Microsoft 365 Copilot: Reimagine Productivity",
-    start: "100000", end: "110000",
-    room: "Salon B (level 3)",
-    desc: "Hear how accessibility and AI work across Microsoft 365 Copilot, Narrator, agentic authoring, and image creation to drive productivity for everyone. Presented by blind support engineers at Microsoft.",
-    pres: "Matt Philipenko, Commercial Support, and Crystal Jones, Disability Answer Desk, Microsoft"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Investing Fundamentals: Understanding Basics",
-    start: "110000", end: "120000",
-    room: "Room 301",
-    desc: "Learn the basics of investing: risk, diversification, time horizon, and asset types to build confidence, make informed decisions, and align your investments with your financial goals.",
-    pres: "Timothy Moore, Senior Financial Advisor, AVP, Wells Fargo"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "JAWS, AI, and the Future of Screen Reading",
-    start: "110000", end: "120000",
-    room: "Rooms 203 and 204",
-    desc: "Discover how AI is transforming screen reading and enhancing productivity and independence. Get a look at what's coming next in JAWS and what using a computer looks like in the future.",
-    pres: "Ryan Jones, SVP, Global Accessibility Strategy and Advocacy, Vispero"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Microsoft Copilot & Seeing AI",
-    start: "113000", end: "123000",
-    room: "Salon B (level 3)",
-    desc: "Learn the latest from AI thought leaders and blind innovators at Microsoft.",
-    pres: "Jessie Lorenz, Copilot, and Saqib Shaikh, Seeing AI, Microsoft"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Resolutions Committee",
-    start: "130000", end: "170000",
-    room: "Salons 5 and 6 (level 4)",
-    desc: "Meeting of the NFB Resolutions Committee.",
-    pres: "Donald Porterfield, Chair"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Drop-In Art Room",
-    start: "130000", end: "180000",
-    room: "Salon A (level 3)",
-    desc: "Free tactile art activities for everyone! Join the Tactile Art Collective and make art with us. Draw, sculpt, color pictures, fold origami, code SVG, build with LEGOs, and solve puzzles. Don't know how? We are here to teach. Come to have fun!",
-    pres: "Ann Cunningham, Coordinator"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Blind Parents Connect",
-    start: "140000", end: "170000",
-    room: "Room 302",
-    desc: "It's essential for parents to connect with other parents. Add blindness to the mix, and getting connected with other blind parents is life changing. Come connect with other blind parents and grow your parent community. Let's learn from each other!",
-    pres: "Lisamaria Martinez, Chair"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Seeking Success Seminar",
-    start: "150000", end: "180000",
-    room: "Salon C (level 3)",
-    desc: "Are you a job seeker trying to get your foot in the door? A mid-career professional looking to pivot? Or do you have entrepreneurial aspirations? Join us to hear from blind people across industries on how they turned their dreams into reality and how you can too!",
-    pres: "Lia Stone, Chair"
-  },
-  {
-    day: "Saturday, July 4",
-    date: "20260704",
-    title: "Aira! Access Is a Human Right",
-    start: "170000", end: "183000",
-    room: "Room 202",
-    desc: "Join the Aira team to explore our latest innovations. Discover hands-free visual interpreting with Meta glasses, get involved in training our Project Astra-powered AI, and learn how to access Aira for free. The future of accessibility is here—come be a part of it!",
-    pres: "Troy Otillio, CEO, and Everette Bacon, Chief of Blindness Initiatives, Aira"
-  },
+const btn = document.getElementById('export-btn');
 
-  // ── Sunday, July 5 ──
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "Colorado Caucus",
-    start: "073000", end: "083000",
-    room: "Room 401",
-    desc: "Colorado affiliate caucus meeting at the NFB National Convention.",
-    pres: ""
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "NFB Board Meeting",
-    start: "090000", end: "113000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Annual meeting of the National Federation of the Blind Board of Directors. Streamed live on Zoom and NFB-NEWSLINE.",
-    pres: ""
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "National Association of Blind Merchants",
-    start: "124500", end: "160000",
-    room: "Rooms 203 and 204",
-    desc: "Curiosity drives innovation, creativity, and change. We will discuss the changing landscape of business, entrepreneurs, and Randolph-Sheppard.",
-    pres: "Nicky Gacos, President"
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "National Organization of Blind Educators",
-    start: "130000", end: "160000",
-    room: "Room 301",
-    desc: "Educators who are blind teach sighted and blind students of all ages, from infants to adults working toward post-graduate degrees. If you are blind and an educator, or are considering a career in education, come join us to share strategies, tips, and tools of the trade. Dues ($10) required for entry. Cash only at the door.",
-    pres: "Lara Sowell, President"
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "Performing Arts and Dance/Movement Workshop",
-    start: "130000", end: "170000",
-    room: "Salon B (level 3)",
-    desc: "Join us for our annual business meeting followed by Sensory Beyond Sight, a dance/movement workshop crafted and hosted by DJ Robinson. Renew your membership by July 1 to ensure you can participate in all business at our meeting by visiting www.nfb-pad.org.",
-    pres: "Katelyn MacIntyre, President"
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "Braille Book Fair",
-    start: "163000", end: "183000",
-    room: "Salon E (level 3)",
-    desc: "Children and their families are invited to browse Braille books looking for a new home. You'll find a broad array of books from a variety of authors for readers young and old alike.",
-    pres: "National Organization of Parents of Blind Children (NOPBC)"
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "NFB in the Kitchen Group",
-    start: "170000", end: "180000",
-    room: "Salon F (level 3)",
-    desc: "Sometimes you need a little spark of inspiration to change your cooking routine. As a community of cooking enthusiasts strengthening their confidence, let's talk food, tools, and cooking trends. Bring your ideas and enthusiasm. Come and taste a few bites from \"The Café\"!",
-    pres: "Regina Mitchell, Chair"
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "EchoVision Demo and Tutorial",
-    start: "170000", end: "180000",
-    room: "Room 304",
-    desc: "Co-designed from the ground up with the blind and low-vision community, EchoVision integrates world-class AI into a lightweight, stylish wearable designed for one thing: empowerment.",
-    pres: "Xiaoran Wang, CEO, AGIGA, Inc."
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "National Organization of Blind Black Leaders",
-    start: "173000", end: "210000",
-    room: "Rooms 203 and 204",
-    desc: "Come join our division annual business meeting and hear inspirational presentations by Black members from the National Federation of the Blind.",
-    pres: "Shawn Callaway, President"
-  },
-  {
-    day: "Sunday, July 5",
-    date: "20260705",
-    title: "Free Professional Headshots for LinkedIn",
-    start: "180000", end: "190000",
-    room: "Room 401",
-    desc: "If you're looking for work, a great first impression in the hiring process starts on LinkedIn. Come get a perfect headshot of your beautiful smiling face by a professional photographer for your LinkedIn profile. Sponsored by AccessAbility Officer.",
-    pres: ""
-  },
+// Update button label whenever any checkbox changes
+document.getElementById('agenda-form').addEventListener('change', () => {
+  const n = document.querySelectorAll('input[name="events"]:checked').length;
+  btn.textContent = n === 0 ? 'No events selected' : `Add ${n} event${n === 1 ? '' : 's'} to Calendar`;
+  btn.disabled = n === 0;
+});
 
-  // ── Monday, July 6 ──
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "Opening General Session",
-    start: "090000", end: "120000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Official opening of the 86th NFB National Convention. Call to order, presidential report, roll call of states, reports, and resolutions. Streamed live on Zoom and NFB-NEWSLINE.",
-    pres: "Mark A. Riccobono, President, National Federation of the Blind"
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "Rebooting My Career After Losing Vision at Thirty-Nine",
-    start: "120000", end: "130000",
-    room: "Room 303",
-    desc: "I spent thirteen years building video games at EA before losing my vision. I broke sighted habits, adapted, and earned a job at Amazon. This session covers how I retrained for high-level jobs and raise the bar on accessibility services.",
-    pres: "Aaron Romero, Senior Software Engineer, Amazon Trust Privacy and Accessibility"
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "Advocacy, Empowerment, and Accessible Voting",
-    start: "120000", end: "140000",
-    room: "Room 202",
-    desc: "Your chance has arrived, get voting with Democracy Live. Experience the latest accessible voting technologies, learn how to advocate for accessible voting in your community, and connect to share your perspective. Your voice makes a difference.",
-    pres: "Jake Koch, Education and Outreach Consultant"
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "Multiline Braille for Active Lives",
-    start: "120000", end: "140000",
-    room: "Room 205",
-    desc: "Discover how the Dot Pad X brings multiline Braille to your active life. Learn how to seamlessly connect to iOS, Windows, and notetakers for unparalleled access to books, apps, documents, and more.",
-    pres: "Timothy Hornik, Sales Development Manager, and Dave Williams, Customer Experience Manager, Dot Inc."
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "General Session II",
-    start: "140000", end: "170000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Second general session of the National Convention. Presidential report, guest presentations, and resolutions.",
-    pres: "Mark A. Riccobono, President, National Federation of the Blind"
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "Career Fair",
-    start: "180000", end: "210000",
-    room: "Salon E (level 3)",
-    desc: "Come meet national and regional employers who are interested in hiring you, including many of our convention sponsors and Texas employers. This is your first step to a great future! Pre-registration is strongly encouraged. Sponsored by the NFB Employment Committee.",
-    pres: "Lia Stone, Chair"
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "CCB Table Shift with Joe",
-    start: "190000", end: "210000",
-    room: "Exhibit Hall Griffin Hall Level 2, Table F1",
-    desc: "Colorado Center for the Blind staffing shift at the exhibit hall.",
-    pres: ""
-  },
-  {
-    day: "Monday, July 6",
-    date: "20260706",
-    title: "Working for Yourself, but Not by Yourself",
-    start: "190000", end: "220000",
-    room: "Room 205",
-    desc: "Experience how professional training, systems-based practices, personal development, and superior Nikken Japanese-wellness technologies are revolutionizing professional network marketing. Imagine the joy of working with successful mentors to earn through serving others.",
-    pres: "Mary Ellen Gabias and Paul Gabias, Independent Nikken Wellness Business Consultants"
-  },
-
-  // ── Tuesday, July 7 ──
-  {
-    day: "Tuesday, July 7",
-    date: "20260707",
-    title: "General Session III",
-    start: "090000", end: "120000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Third general session: financial report, board elections, employment panel, and resolutions.",
-    pres: "Mark A. Riccobono, President, National Federation of the Blind"
-  },
-  {
-    day: "Tuesday, July 7",
-    date: "20260707",
-    title: "What If the Screen Reader Never Had to Ask?",
-    start: "120000", end: "130000",
-    room: "Salon F (level 3)",
-    desc: "Since 1997, screen readers have all worked the same way: ask the app what's on screen. We tried something different. Come hear how Amazon built a faster screen reader from scratch, now shipping on select Fire TV devices.",
-    pres: "Marc Mulcahy, Principal Software Development Engineer, Amazon Trust Privacy and Accessibility"
-  },
-  {
-    day: "Tuesday, July 7",
-    date: "20260707",
-    title: "General Session IV",
-    start: "140000", end: "170000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Fourth general session: NLS update, 2026 advocacy report, and resolutions committee report.",
-    pres: "Mark A. Riccobono, President, National Federation of the Blind"
-  },
-  {
-    day: "Tuesday, July 7",
-    date: "20260707",
-    title: "Ray-Ban Meta: Going Further for BLV",
-    start: "180000", end: "190000",
-    room: "Salon C (level 3)",
-    desc: "Ray-Ban Meta glasses have been breaking down barriers for the blind and low-vision community since coming to market. We listened to users and improved features to make our technology more accessible. Come learn what we've built this year and get a sneak peek into the future.",
-    pres: "Agustya Mehta, Director, Concept Engineering; Fan Zhang, Principal Engineer, Accessibility Innovation; and Jacklyn Doig-Keys, Reality Labs Policy Manager, Meta"
-  },
-  {
-    day: "Tuesday, July 7",
-    date: "20260707",
-    title: "Twenty-Fourth Annual Showcase of Talent",
-    start: "200000", end: "230000",
-    room: "Salon E (level 3)",
-    desc: "Join us for a night of great performances! Whether you take the stage or cheer from the audience, it's always an entertaining evening. Performers $15; early admission $5; day-of admission $10. Cash prizes awarded. Email nfbpad@gmail.com with questions or to sign up.",
-    pres: "Katelyn MacIntyre, President, National Federation of the Blind Performing Arts Division"
-  },
-
-  // ── Wednesday, July 8 ──
-  {
-    day: "Wednesday, July 8",
-    date: "20260708",
-    title: "General Session V",
-    start: "090000", end: "120000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Final general session: keynote on blind identity, NFB program updates, address by U.S. Representative Greg Casar, Dr. Jacob Bolotin Awards, and final resolutions.",
-    pres: "Mark A. Riccobono, President, National Federation of the Blind"
-  },
-  {
-    day: "Wednesday, July 8",
-    date: "20260708",
-    title: "Holding Uber and Lyft Accountable with Money Damages",
-    start: "123000", end: "133000",
-    room: "Room 401",
-    desc: "Rideshare denials violate your civil rights. Learn how blind riders are using small claims court to hold companies accountable without hiring an attorney. We'll cover filing a claim, preparing for a hearing, documenting violations, and using free resources to pursue damages.",
-    pres: "Tim Elder, TRE Legal Practice"
-  },
-  {
-    day: "Wednesday, July 8",
-    date: "20260708",
-    title: "Technology Accessibility Listening Session",
-    start: "130000", end: "140000",
-    room: "Room 201",
-    desc: "Meet the NFB's Committee on Accessibility and User Innovation. We want to hear from our members about what really matters to them regarding their use of technology. What is working? What isn't working? What does it mean when an item of technology is \"accessible\" to the blind?",
-    pres: "Curtis Chong, Chair"
-  },
-  {
-    day: "Wednesday, July 8",
-    date: "20260708",
-    title: "Banquet",
-    start: "183000", end: "220000",
-    room: "JW Grand Ballroom (level 4)",
-    desc: "Annual closing banquet of the NFB National Convention. Presidential address, scholarship awards, and celebration of the blindness community.",
-    pres: "Mark A. Riccobono, President, National Federation of the Blind"
-  }
-];
-
-const selected = new Set();
-
-function formatTime(t) {
-  const h = parseInt(t.slice(0,2));
-  const m = t.slice(2,4);
-  const ampm = h < 12 ? 'a.m.' : 'p.m.';
-  const h12 = h % 12 || 12;
-  return m === '00' ? `${h12}:00 ${ampm}` : `${h12}:${m} ${ampm}`;
-}
-
-function updateButton() {
-  const n = selected.size;
-  const label = n === 0
-    ? 'No events selected'
-    : `Add ${n} event${n === 1 ? '' : 's'} to Calendar`;
-  ['export-btn-end', 'export-btn-sticky'].forEach(id => {
-    const btn = document.getElementById(id);
-    btn.textContent = label;
-    btn.disabled = n === 0;
-  });
-}
-
-function toggleEvent(idx, el) {
-  const checked = el.getAttribute('aria-checked') === 'true';
-  const nowChecked = !checked;
-  el.setAttribute('aria-checked', nowChecked ? 'true' : 'false');
-  const card = document.getElementById(`event-${idx}`);
-  if (nowChecked) {
-    selected.add(idx);
-    card.classList.add('selected');
-  } else {
-    selected.delete(idx);
-    card.classList.remove('selected');
-  }
-  updateButton();
-}
-
-function buildPage() {
-  const main = document.getElementById('main');
-  const days = [...new Set(EVENTS.map(e => e.day))];
-
-  days.forEach(day => {
-    const section = document.createElement('section');
-    section.className = 'day-section';
-
-    const dayH1 = document.createElement('h1');
-    dayH1.className = 'day-heading';
-    dayH1.textContent = day;
-    section.appendChild(dayH1);
-
-    EVENTS.forEach((ev, idx) => {
-      if (ev.day !== day) return;
-
-      const card = document.createElement('div');
-      card.className = 'event';
-      card.id = `event-${idx}`;
-
-      // h2 with role=checkbox — VoiceOver reads title + checkbox state together
-      const title = document.createElement('h2');
-      title.className = 'event-title';
-      title.setAttribute('role', 'checkbox');
-      title.setAttribute('aria-checked', 'false');
-      title.setAttribute('aria-label', ev.title);
-      title.setAttribute('tabindex', '0');
-
-      // Visible checkmark for sighted users when checked
-      const checkMark = document.createElement('span');
-      checkMark.className = 'check-mark';
-      checkMark.setAttribute('aria-hidden', 'true');
-      title.appendChild(checkMark);
-
-      // Title text
-      const titleText = document.createTextNode(ev.title);
-      title.appendChild(titleText);
-
-      // Toggle on click/tap
-      title.addEventListener('click', () => toggleEvent(idx, title));
-      // Toggle on Space or Enter for keyboard users
-      title.addEventListener('keydown', e => {
-        if (e.key === ' ' || e.key === 'Enter') {
-          e.preventDefault();
-          toggleEvent(idx, title);
-        }
-      });
-
-      card.appendChild(title);
-
-      // Meta info — time, room, description, presenters
-      const meta = document.createElement('div');
-      meta.className = 'event-meta';
-
-      const time = document.createElement('p');
-      time.className = 'event-time';
-      time.textContent = formatTime(ev.start) + '–' + formatTime(ev.end);
-      meta.appendChild(time);
-
-      const room = document.createElement('p');
-      room.className = 'event-room';
-      room.innerHTML = `<strong>Room:</strong> ${ev.room}`;
-      meta.appendChild(room);
-
-      const desc = document.createElement('p');
-      desc.className = 'event-desc';
-      desc.textContent = ev.desc;
-      meta.appendChild(desc);
-
-      if (ev.pres) {
-        const pres = document.createElement('p');
-        pres.className = 'event-pres';
-        pres.textContent = ev.pres;
-        meta.appendChild(pres);
-      }
-
-      card.appendChild(meta);
-      section.appendChild(card);
-    });
-
-    main.appendChild(section);
-  });
-}
-
-function makeICS() {
-  const sorted = [...selected].sort((a, b) => {
-    const ea = EVENTS[a], eb = EVENTS[b];
-    return (ea.date + ea.start).localeCompare(eb.date + eb.start);
-  });
+btn.addEventListener('click', () => {
+  const checked = [...document.querySelectorAll('input[name="events"]:checked')];
+  if (!checked.length) return;
 
   const esc = s => s.replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
   const now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
 
-  const vevents = sorted.map(idx => {
-    const ev = EVENTS[idx];
+  const vevents = checked.map((cb, i) => {
+    const ev = EVENT_DATA[cb.value];
     return [
       'BEGIN:VEVENT',
-      `UID:nfb2026-${ev.date}-${ev.start}-${idx}@nfb26`,
+      `UID:nfb2026-${ev.date}-${ev.start}-${i}@nfb26`,
       `DTSTAMP:${now}`,
       `DTSTART:${ev.date}T${ev.start}Z`,
       `DTEND:${ev.date}T${ev.end}Z`,
       `SUMMARY:${esc(ev.title)}`,
-      `LOCATION:${esc(ev.room + ', JW Marriott Austin, TX')}`,
-      `DESCRIPTION:${esc(ev.desc + (ev.pres ? '\n\n' + ev.pres : ''))}`,
+      `LOCATION:${esc(ev.room)}`,
+      `DESCRIPTION:${esc(ev.desc)}`,
       'END:VEVENT'
     ].join('\r\n');
   });
 
-  return [
+  const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//NFB2026//Eric Agenda//EN',
@@ -859,10 +998,8 @@ function makeICS() {
     ...vevents,
     'END:VCALENDAR'
   ].join('\r\n');
-}
 
-function exportICS() {
-  const blob = new Blob([makeICS()], { type: 'text/calendar;charset=utf-8' });
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -873,16 +1010,10 @@ function exportICS() {
   URL.revokeObjectURL(url);
 
   const t = document.getElementById('toast');
-  t.textContent = `Downloaded ${selected.size} event${selected.size === 1 ? '' : 's'} — open nfb2026_eric_agenda.ics to import`;
+  t.textContent = `Downloaded ${checked.length} event${checked.length === 1 ? '' : 's'} — open nfb2026_eric_agenda.ics to import`;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4000);
-}
-
-document.getElementById('export-btn-end').addEventListener('click', exportICS);
-document.getElementById('export-btn-sticky').addEventListener('click', exportICS);
-
-buildPage();
-updateButton();
+});
 </script>
 </body>
 </html>
