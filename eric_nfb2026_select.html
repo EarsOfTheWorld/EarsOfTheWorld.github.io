@@ -11,7 +11,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: #f7f5f0;
     color: #1a1a1a;
-    padding-bottom: 5rem; /* space for sticky button */
+    padding-bottom: 5rem;
   }
 
   header {
@@ -48,68 +48,73 @@
     padding: 0.9rem 1rem 0.85rem;
     margin-bottom: 0.75rem;
     box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    border-left: 4px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .event.selected {
+    border-left-color: #f0a500;
   }
 
-  /* The checkbox label IS the h2 — wraps everything for large tap target */
-  .event-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  .event-label h2 {
+  /* The h2 IS the checkbox — role=checkbox on the heading */
+  .event-title {
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.35;
     color: #1a1a1a;
-    flex: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.1rem 0;
+    /* Make it feel tappable */
+    -webkit-tap-highlight-color: transparent;
+  }
+  .event-title:focus {
+    outline: 3px solid #f0a500;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
-  /* Custom checkbox */
-  .event-label input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
+  /* Visual checkbox indicator */
+  .event-title::before {
+    content: '';
+    display: block;
     width: 24px;
     height: 24px;
     min-width: 24px;
     border: 2px solid #1a3a5c;
     border-radius: 6px;
     background: #fff;
-    margin-top: 0.1rem;
-    cursor: pointer;
+    margin-top: 0.05rem;
     position: relative;
     transition: background 0.15s, border-color 0.15s;
   }
-  .event-label input[type="checkbox"]:checked {
+  .event-title[aria-checked="true"]::before {
     background: #1a3a5c;
     border-color: #1a3a5c;
+    /* Checkmark via box-shadow trick */
+    box-shadow: inset 0 0 0 2px #1a3a5c;
   }
-  .event-label input[type="checkbox"]:checked::after {
-    content: '';
+  /* Checkmark drawn with a pseudo on the span inside */
+  .event-title[aria-checked="true"] .check-mark {
+    display: block;
+  }
+  .check-mark {
+    display: none;
     position: absolute;
-    left: 5px; top: 2px;
-    width: 10px; height: 14px;
+    left: 1.9rem;
+    margin-top: -1.55rem;
+    width: 10px;
+    height: 14px;
     border: 3px solid #fff;
     border-top: none;
     border-left: none;
     transform: rotate(45deg);
-  }
-  .event-label input[type="checkbox"]:focus-visible {
-    outline: 3px solid #f0a500;
-    outline-offset: 2px;
-  }
-
-  /* Selected state highlights the card */
-  .event.selected {
-    border-left: 4px solid #f0a500;
-    padding-left: calc(1rem - 4px);
+    pointer-events: none;
   }
 
   .event-meta {
     margin-top: 0.5rem;
-    padding-left: 0; /* no indent — desc reads cleanly after heading */
   }
   .event-time {
     font-size: 0.78rem;
@@ -137,7 +142,7 @@
     margin-top: 0.4rem;
   }
 
-  /* Sticky export button */
+  /* Sticky bar for sighted users */
   #sticky-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -146,7 +151,7 @@
     padding: 0.75rem 1rem;
     z-index: 50;
   }
-  #export-btn {
+  #export-btn-sticky {
     width: 100%;
     background: #1a3a5c;
     color: #fff;
@@ -156,18 +161,10 @@
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.15s;
   }
-  #export-btn:disabled {
-    background: #aaa;
-    cursor: default;
-  }
-  #export-btn:focus-visible {
-    outline: 3px solid #f0a500;
-    outline-offset: 2px;
-  }
+  #export-btn-sticky:disabled { background: #aaa; cursor: default; }
 
-  /* The DOM-order copy of the button (for VoiceOver reading order) */
+  /* DOM-order button for VoiceOver — visible and at end of page */
   #export-btn-end {
     display: block;
     width: calc(100% - 2rem);
@@ -180,14 +177,9 @@
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.15s;
   }
   #export-btn-end:disabled { background: #aaa; cursor: default; }
   #export-btn-end:focus-visible { outline: 3px solid #f0a500; outline-offset: 2px; }
-  /* Hide visually — VoiceOver still reads and can activate it */
-  @media (max-width: 9999px) {
-    #export-btn-end { opacity: 1; } /* keep visible for now; can hide if preferred */
-  }
 
   #toast {
     position: fixed;
@@ -215,17 +207,17 @@
 
 <header>
   <h1>NFB 2026 – Eric's Agenda</h1>
-  <p>Austin, Texas · July 3–8, 2026 · Check events to add to Calendar</p>
+  <p>Austin, Texas · July 3–8, 2026 · Double-tap a session to select it</p>
 </header>
 
 <main id="main"></main>
 
-<!-- DOM-order button: VoiceOver reads this last, naturally -->
-<button id="export-btn-end" disabled aria-live="polite">No events selected</button>
+<!-- DOM-order export button: VoiceOver reads this last in natural order -->
+<button id="export-btn-end" disabled>No events selected</button>
 
-<!-- Visually sticky copy for sighted users -->
+<!-- Visually sticky copy for sighted users, hidden from VoiceOver -->
 <div id="sticky-bar" aria-hidden="true">
-  <button id="export-btn" disabled tabindex="-1">No events selected</button>
+  <button id="export-btn-sticky" disabled tabindex="-1">No events selected</button>
 </div>
 
 <div id="toast" role="status" aria-live="polite"></div>
@@ -338,7 +330,7 @@ const EVENTS = [
     title: "Inside the Next Generation of Be My Eyes",
     start: "160000", end: "170000",
     room: "Rooms 201 and 202",
-    desc: "Join Be My Eyes for a whirlwind tour of the latest features, redesigns, and tools coming to the platform. Experience live demos of agentic call mode, refreshed mobile and desktop interfaces, and more as we showcase what's new and what's next.",
+    desc: "Join Be My Eyes for a whirlwind tour of the latest features, redesigns, and tools coming to the platform. Experience live demos of agentic call mode, refreshed mobile and desktop interfaces, and more.",
     pres: "Danielle Montour Lane, Community Manager, Be My Eyes"
   },
   {
@@ -713,7 +705,6 @@ const EVENTS = [
   }
 ];
 
-// Track selections: set of event indices
 const selected = new Set();
 
 function formatTime(t) {
@@ -729,13 +720,26 @@ function updateButton() {
   const label = n === 0
     ? 'No events selected'
     : `Add ${n} event${n === 1 ? '' : 's'} to Calendar`;
-  const disabled = n === 0;
-  const end = document.getElementById('export-btn-end');
-  const sticky = document.getElementById('export-btn');
-  end.textContent = label;
-  end.disabled = disabled;
-  sticky.textContent = label;
-  sticky.disabled = disabled;
+  ['export-btn-end', 'export-btn-sticky'].forEach(id => {
+    const btn = document.getElementById(id);
+    btn.textContent = label;
+    btn.disabled = n === 0;
+  });
+}
+
+function toggleEvent(idx, el) {
+  const checked = el.getAttribute('aria-checked') === 'true';
+  const nowChecked = !checked;
+  el.setAttribute('aria-checked', nowChecked ? 'true' : 'false');
+  const card = document.getElementById(`event-${idx}`);
+  if (nowChecked) {
+    selected.add(idx);
+    card.classList.add('selected');
+  } else {
+    selected.delete(idx);
+    card.classList.remove('selected');
+  }
+  updateButton();
 }
 
 function buildPage() {
@@ -746,10 +750,10 @@ function buildPage() {
     const section = document.createElement('section');
     section.className = 'day-section';
 
-    const h1 = document.createElement('h1');
-    h1.className = 'day-heading';
-    h1.textContent = day;
-    section.appendChild(h1);
+    const dayH1 = document.createElement('h1');
+    dayH1.className = 'day-heading';
+    dayH1.textContent = day;
+    section.appendChild(dayH1);
 
     EVENTS.forEach((ev, idx) => {
       if (ev.day !== day) return;
@@ -758,45 +762,46 @@ function buildPage() {
       card.className = 'event';
       card.id = `event-${idx}`;
 
-      // Label wraps checkbox + h2 title — entire thing is the tap target
-      const label = document.createElement('label');
-      label.className = 'event-label';
-      label.htmlFor = `cb-${idx}`;
+      // h2 with role=checkbox — VoiceOver reads title + checkbox state together
+      const title = document.createElement('h2');
+      title.className = 'event-title';
+      title.setAttribute('role', 'checkbox');
+      title.setAttribute('aria-checked', 'false');
+      title.setAttribute('aria-label', ev.title);
+      title.setAttribute('tabindex', '0');
 
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.id = `cb-${idx}`;
-      cb.setAttribute('aria-describedby', `meta-${idx}`);
+      // Visible checkmark for sighted users when checked
+      const checkMark = document.createElement('span');
+      checkMark.className = 'check-mark';
+      checkMark.setAttribute('aria-hidden', 'true');
+      title.appendChild(checkMark);
 
-      cb.addEventListener('change', () => {
-        if (cb.checked) {
-          selected.add(idx);
-          card.classList.add('selected');
-        } else {
-          selected.delete(idx);
-          card.classList.remove('selected');
+      // Title text
+      const titleText = document.createTextNode(ev.title);
+      title.appendChild(titleText);
+
+      // Toggle on click/tap
+      title.addEventListener('click', () => toggleEvent(idx, title));
+      // Toggle on Space or Enter for keyboard users
+      title.addEventListener('keydown', e => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggleEvent(idx, title);
         }
-        updateButton();
       });
 
-      const h2 = document.createElement('h2');
-      h2.textContent = ev.title;
+      card.appendChild(title);
 
-      label.appendChild(cb);
-      label.appendChild(h2);
-      card.appendChild(label);
-
-      // Meta block (not inside label — screen readers read it via aria-describedby)
+      // Meta info — time, room, description, presenters
       const meta = document.createElement('div');
       meta.className = 'event-meta';
-      meta.id = `meta-${idx}`;
 
-      const time = document.createElement('div');
+      const time = document.createElement('p');
       time.className = 'event-time';
       time.textContent = formatTime(ev.start) + '–' + formatTime(ev.end);
       meta.appendChild(time);
 
-      const room = document.createElement('div');
+      const room = document.createElement('p');
       room.className = 'event-room';
       room.innerHTML = `<strong>Room:</strong> ${ev.room}`;
       meta.appendChild(room);
@@ -822,19 +827,19 @@ function buildPage() {
 }
 
 function makeICS() {
-  const sorted = [...selected].sort((a,b) => {
+  const sorted = [...selected].sort((a, b) => {
     const ea = EVENTS[a], eb = EVENTS[b];
     return (ea.date + ea.start).localeCompare(eb.date + eb.start);
   });
 
+  const esc = s => s.replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+  const now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+
   const vevents = sorted.map(idx => {
     const ev = EVENTS[idx];
-    const uid = `nfb2026-${ev.date}-${ev.start}-${idx}@nfb26`;
-    const now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
-    const esc = s => s.replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
     return [
       'BEGIN:VEVENT',
-      `UID:${uid}`,
+      `UID:nfb2026-${ev.date}-${ev.start}-${idx}@nfb26`,
       `DTSTAMP:${now}`,
       `DTSTART:${ev.date}T${ev.start}Z`,
       `DTEND:${ev.date}T${ev.end}Z`,
@@ -857,8 +862,7 @@ function makeICS() {
 }
 
 function exportICS() {
-  const ics = makeICS();
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const blob = new Blob([makeICS()], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -869,13 +873,13 @@ function exportICS() {
   URL.revokeObjectURL(url);
 
   const t = document.getElementById('toast');
-  t.textContent = `nfb2026_eric_agenda.ics downloaded (${selected.size} event${selected.size === 1 ? '' : 's'})`;
+  t.textContent = `Downloaded ${selected.size} event${selected.size === 1 ? '' : 's'} — open nfb2026_eric_agenda.ics to import`;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
+  setTimeout(() => t.classList.remove('show'), 4000);
 }
 
-document.getElementById('export-btn').addEventListener('click', exportICS);
 document.getElementById('export-btn-end').addEventListener('click', exportICS);
+document.getElementById('export-btn-sticky').addEventListener('click', exportICS);
 
 buildPage();
 updateButton();
