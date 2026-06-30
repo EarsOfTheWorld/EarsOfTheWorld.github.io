@@ -974,14 +974,39 @@ btn.addEventListener('click', () => {
   const esc = s => s.replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
   const now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
 
+  // Austin, TX is on Central Time (CDT, UTC-5) in July.
+  // Times in EVENT_DATA are already local Austin time, so we tag them
+  // with TZID=America/Chicago instead of stamping a bare UTC "Z" —
+  // otherwise calendar apps read "083000Z" as 8:30 UTC and shift it
+  // five hours earlier when displaying in local time.
+  const vtimezone = [
+    'BEGIN:VTIMEZONE',
+    'TZID:America/Chicago',
+    'BEGIN:DAYLIGHT',
+    'TZOFFSETFROM:-0600',
+    'TZOFFSETTO:-0500',
+    'TZNAME:CDT',
+    'DTSTART:19700308T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+    'END:DAYLIGHT',
+    'BEGIN:STANDARD',
+    'TZOFFSETFROM:-0500',
+    'TZOFFSETTO:-0600',
+    'TZNAME:CST',
+    'DTSTART:19701101T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+    'END:STANDARD',
+    'END:VTIMEZONE'
+  ].join('\r\n');
+
   const vevents = checked.map((cb, i) => {
     const ev = EVENT_DATA[cb.value];
     return [
       'BEGIN:VEVENT',
       `UID:nfb2026-${ev.date}-${ev.start}-${i}@nfb26`,
       `DTSTAMP:${now}`,
-      `DTSTART:${ev.date}T${ev.start}Z`,
-      `DTEND:${ev.date}T${ev.end}Z`,
+      `DTSTART;TZID=America/Chicago:${ev.date}T${ev.start}`,
+      `DTEND;TZID=America/Chicago:${ev.date}T${ev.end}`,
       `SUMMARY:${esc(ev.title)}`,
       `LOCATION:${esc(ev.room)}`,
       `DESCRIPTION:${esc(ev.desc)}`,
@@ -995,6 +1020,7 @@ btn.addEventListener('click', () => {
     'PRODID:-//NFB2026//Eric Agenda//FR',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
+    vtimezone,
     ...vevents,
     'END:VCALENDAR'
   ].join('\r\n');
